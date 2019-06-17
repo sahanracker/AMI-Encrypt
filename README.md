@@ -1,14 +1,14 @@
-# AMI-Encrypt
 
-## AMI-Encrypt setting up root encrypted AMI 
 
-##How to use
-
-NOTE: You need to export the AWS environment you need to create the AMI before running this shell script.
+## AMI-Encrypt (setting up root encrypted AMI )
+This small shell script is setup to crete root encrypted Market place AMI.
+After creating the AMI it will clean the unwanted instance and the unencrypted AMI.
+NOTE: You have to clean the resources if the script fail during the process.
+#How to use
+Make sure you export your AWS envrionment.
 ```
 faws env
 ```
-
 Run the script with following arguments in the terminal (Linux,Mac)
 ```
 git clone git@github.com:sahanracker/AMI-Encrypt.git
@@ -27,5 +27,5 @@ Terminating unencrypted instance...
 Creating Encrypted AMI
 Waiting for Encrypted AMI ami-0d09d38aa3d904240 to be available...
 Deleting unneeded AMI Copy
-Your new AMI is baked with the name 'Rax-Amzn-2018-06-17 Encrypted' is available as --> ami-0d09d38aa3d904240
+Your new AMI is baked with the name 'Rax-Amzn-2018-06-17-Encrypted' is available as --> ami-0d09d38aa3d904240
 ```
