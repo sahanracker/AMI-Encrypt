@@ -1,4 +1,15 @@
 #!/bin/bash
+
+ ## 
+ #
+ # 1. Create the instance using Market place AMI given in the parameters of Region,AMI_ID and the AMI Name
+ # 2. Create AMI copy from the instance
+ # 3. Terminate the instance
+ # 4. Create encrypted AMI
+ # 5. Degister unencrypted AMI
+ # For more info visit https://github.com/sahanracker/AMI-Encrypt
+ # Script created by sksa1846(Sahan Perera) CloudEnginer II, Rackspace EMEA
+
 set -e
 
 export AWS_DEFAULT_REGION=$1
@@ -8,7 +19,7 @@ NAME=$3
 echo "Creating instance from marketplace AMI $MARKETPLACE_AMI"
 INSTANCE=`aws ec2 run-instances --image-id $MARKETPLACE_AMI --count 1 --instance-type t2.micro --query 'Instances[0].InstanceId'`
 INSTANCE=`sed -e 's/^"//' -e 's/"$//' <<<"$INSTANCE"`
-#echo "Waiting for instance $INSTANCE to be running and status OK..."
+echo "Waiting for instance $INSTANCE to be running and status OK..."
 aws ec2 wait instance-status-ok --instance-ids $INSTANCE
 
 echo "Creating account AMI copy"
@@ -22,14 +33,14 @@ echo "Terminating unencrypted instance..."
 TERMINATION=`aws ec2 terminate-instances --instance-ids $INSTANCE`
 
 echo "Creating Encrypted AMI"
-AMI_ENC=`aws ec2 copy-image --source-image-id $AMI_COPY --name "$NAME Encrypted" --encrypted --source-region $AWS_DEFAULT_REGION --region $AWS_DEFAULT_REGION --query 'ImageId'`
+AMI_ENC=`aws ec2 copy-image --source-image-id $AMI_COPY --name "$NAME-Encrypted" --encrypted --source-region $AWS_DEFAULT_REGION --region $AWS_DEFAULT_REGION --query 'ImageId'`
 AMI_ENC=`sed -e 's/^"//' -e 's/"$//' <<<"$AMI_ENC"`
 
 echo "Waiting for Encrypted AMI $AMI_ENC to be available..."
 aws ec2 wait image-available --image-ids $AMI_ENC
 
-echo "Deleting unneeded AMI Copy"
+echo "Delete unencrypted AMI Copy"
 REMOVED=`aws ec2 deregister-image --image-id $AMI_COPY`
 
 aws ec2 wait instance-terminated --instance-ids $INSTANCE
-echo "Everything is good! Your new AMI '$NAME Encrypted' is available as $AMI_ENC"
+echo "Your new AMI is baked with the name '$NAME-Encrypted' is available as --> $AMI_ENC"
