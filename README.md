@@ -1,7 +1,7 @@
 
 
 ## AMI-Encrypt (setting up root encrypted AMI )
-This small shell script is setup to crete root encrypted Market place AMI.
+This small shell script is setup to create root encrypted Market place AMI.
 After creating the AMI it will clean the unwanted instance and the unencrypted AMI.
 NOTE: You have to clean the resources if the script fail during the process.
 #How to use
