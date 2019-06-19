@@ -6,6 +6,7 @@ After creating the AMI it will clean the unwanted instance and the unencrypted A
 NOTE: You have to clean the resources if the script fail during the process.
 
 #####How to use
+
 **Make sure you export your AWS envrionment.**
 ```
 faws env
